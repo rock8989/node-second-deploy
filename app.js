@@ -9,7 +9,7 @@ const upload = require('./api/upload')
 const path = require('path')
 
 app.use(cors)
-// sequelize.sync()
+sequelize.sync()
 
 app.use(bodyParser.json({
   extended: true,
