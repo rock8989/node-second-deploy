@@ -4,7 +4,7 @@ const { notice } = require('../models')
 const create = async (req, res) => {
     console.log('===== NOTICE REGISTER =====')
     console.log('req.body = ', req.body)
-
+    
     // const form = req.body.form
     
     const { subj, conts, tp, init } = req.body.form
@@ -36,6 +36,14 @@ const detail = async (req, res) => {
 
 const list = async (req, res) => {
     console.log('==== NOTICE LIST ====')
+    console.log('NODE_PORT222222 = ', process.env.NODE_PORT)
+    console.log('req.user = ', req.user.id)
+
+    // const email = req.user.id
+
+    // const loginInfo = await authLogin.findOne({ where: { email } })
+
+    // if (!loginInfo) return res.status(401).json({error: 'NOT FINT LOGIN INFO'})
     
     const noticeList = await notice.findAll()
 

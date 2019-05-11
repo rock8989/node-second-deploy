@@ -1,5 +1,6 @@
 const { authLogin } = require('../models')
 const encryption = require('./encryption')
+const jwt = require('./jwt')
 
 const login = async (req, res) => {
     console.log('==== LOGIN ====')
@@ -19,7 +20,12 @@ const login = async (req, res) => {
     console.log('pwdChk = ', pwChk)
 
     if (loginInfo.dataValues.password === pwChk.password) {
-        res.json({body: loginInfo.dataValues.email})
+        // res.json({body: loginInfo.dataValues.email})
+        const token = jwt.signToken(loginInfo.dataValues.email)
+        
+        console.log(token)
+
+        res.json({body: token})
     } else {
         res.status(401).json({error: 'NOT FINT LOGIN INFO'})
     }
@@ -40,7 +46,6 @@ const login = async (req, res) => {
     // } else {
     //     res.status(401).json({error: 'NOT FINT LOGIN INFO'})
     // }
-    
 }
 
 const join = async (req, res) => {

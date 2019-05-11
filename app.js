@@ -6,7 +6,9 @@ const sequelize = require('./models').sequelize
 const notice = require('./api/notice')
 const auth = require('./api/auth')
 const upload = require('./api/upload')
-const path = require('path')
+require('dotenv').config()
+
+console.log('NODE_PORT = ', process.env.DEV_NODE_PORT)
 
 app.use(cors)
 sequelize.sync()
@@ -50,13 +52,16 @@ app.use(express.static('public'))
 
 app.post('/notice', notice.create)
 app.get('/notice/:noticeId', notice.detail)
-app.get('/notice', notice.list)
+
+app.get('/notice', require('./api/jwt').returnAuth(), notice.list)
+
 app.put('/notice/:noticeId', notice.modify)
 app.delete('/notice/:noticeId', notice.destroy)
 app.post('/login', auth.login)
 app.post('/popup', upload.single('image'), require('./api/popup').create)
-
 app.post('/registration', auth.join)
+
+app.get('/userInfo', require('./api/jwt').returnAuth(), require('./api/userInfo').info)
 
 // app.use((req, res, next) => {
 //   // res.status = 404
@@ -70,7 +75,7 @@ app.post('/registration', auth.join)
 // res.json({ error: err.message || 'internal server error' })
 // })
 
-app.listen(3000, () => {
+app.listen(process.env.DEV_NODE_PORT || 3000, () => {
   console.log("3000 대기중!")
 })
 
